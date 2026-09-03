@@ -35,6 +35,7 @@ desktop.ini
 
 # Datos y modelos generados
 data/*.npy
+data/*.npz
 data/*.csv
 models/*.pt
 models/*.pth
