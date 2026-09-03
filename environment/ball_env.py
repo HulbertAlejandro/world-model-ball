@@ -54,14 +54,66 @@ class BallEnv:
     def paddle_right(self):
         return self.paddle_x + self.paddle_width / 2
 
-    def reset(self):
-        self.x = 400.0
-        self.y = 200.0
-        self.vx = 3.0
-        self.vy = 0.0
+    def reset(self, randomize=False, rng=None):
+        """
+        Reinicia el entorno.
 
-        self.paddle_x = self.width / 2
+        Si randomize=False:
+            Utiliza un estado inicial fijo.
 
+        Si randomize=True:
+            Genera un estado inicial aleatorio.
+        """
+
+        if randomize:
+            if rng is None:
+                rng = np.random.default_rng()
+
+            # Posición inicial aleatoria de la bola
+            self.x = rng.uniform(
+                self.ball_radius + 50,
+                self.width - self.ball_radius - 50
+            )
+
+            self.y = rng.uniform(
+                150.0,
+                300.0
+            )
+
+            # Velocidad horizontal aleatoria
+            self.vx = rng.uniform(
+                -5.0,
+                5.0
+            )
+
+            # Evitar velocidades demasiado cercanas a cero
+            if abs(self.vx) < 1.0:
+                self.vx = 1.0 if self.vx >= 0 else -1.0
+
+            # Velocidad vertical inicial aleatoria
+            self.vy = rng.uniform(
+                -2.0,
+                2.0
+            )
+
+            # Posición inicial aleatoria de la plataforma
+            half_width = self.paddle_width / 2
+
+            self.paddle_x = rng.uniform(
+                half_width,
+                self.width - half_width
+            )
+
+        else:
+            # Estado inicial fijo
+            self.x = 400.0
+            self.y = 200.0
+            self.vx = 3.0
+            self.vy = 0.0
+
+            self.paddle_x = self.width / 2
+
+        # Reiniciar estado del episodio
         self.done = False
         self.step_count = 0
 
@@ -88,7 +140,9 @@ class BallEnv:
 
         # Validar acción
         if action not in (0, 1, 2):
-            raise ValueError("La acción debe ser 0, 1 o 2.")
+            raise ValueError(
+                "La acción debe ser 0, 1 o 2."
+            )
 
         self.step_count += 1
 
@@ -143,10 +197,12 @@ class BallEnv:
         if (
             self.vy > 0
             and self.y + self.ball_radius >= self.paddle_y
-            and self.y - self.ball_radius <= self.paddle_y + self.paddle_height
+            and self.y - self.ball_radius
+            <= self.paddle_y + self.paddle_height
             and self.paddle_left <= self.x <= self.paddle_right
         ):
             self.y = self.paddle_y - self.ball_radius
+
             self.vy = -abs(self.vy) * self.restitution
 
             reward = 1.0
