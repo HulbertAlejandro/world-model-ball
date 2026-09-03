@@ -18,6 +18,14 @@ class BallEnv:
     def ground_y(self):
         return self.height - self.ball_radius
 
+    @property
+    def left_wall_x(self):
+        return self.ball_radius
+
+    @property
+    def right_wall_x(self):
+        return self.width - self.ball_radius
+
     def reset(self):
         self.x = 100.0
         self.y = 100.0
@@ -38,8 +46,19 @@ class BallEnv:
         self.x += self.vx
         self.y += self.vy
 
+        # Colisión con el suelo
         if self.y >= self.ground_y:
             self.y = self.ground_y
             self.vy = -self.vy * self.restitution
+
+        # Colisión con la pared izquierda
+        if self.x <= self.left_wall_x:
+            self.x = self.left_wall_x
+            self.vx = -self.vx * self.restitution
+
+        # Colisión con la pared derecha
+        if self.x >= self.right_wall_x:
+            self.x = self.right_wall_x
+            self.vx = -self.vx * self.restitution
 
         return self.get_state()
