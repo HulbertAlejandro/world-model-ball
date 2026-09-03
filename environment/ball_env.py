@@ -7,6 +7,7 @@ class BallEnv:
         self.height = 600
         self.gravity = 0.5
         self.ball_radius = 10.0
+        self.restitution = 0.9
 
         self.x = 0.0
         self.y = 0.0
@@ -36,5 +37,9 @@ class BallEnv:
 
         self.x += self.vx
         self.y += self.vy
+
+        if self.y >= self.ground_y:
+            self.y = self.ground_y
+            self.vy = -self.vy * self.restitution
 
         return self.get_state()
