@@ -6,11 +6,16 @@ class BallEnv:
         self.width = 800
         self.height = 600
         self.gravity = 0.5
+        self.ball_radius = 10.0
 
         self.x = 0.0
         self.y = 0.0
         self.vx = 0.0
         self.vy = 0.0
+
+    @property
+    def ground_y(self):
+        return self.height - self.ball_radius
 
     def reset(self):
         self.x = 100.0
