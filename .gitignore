@@ -1,0 +1,43 @@
+# Entorno virtual
+.venv/
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Sistema operativo (Windows)
+Thumbs.db
+desktop.ini
+
+# Datos y modelos generados
+data/*.npy
+data/*.csv
+models/*.pt
+models/*.pth
+
+# Jupyter
+.ipynb_checkpoints/# Entorno virtual
+.venv/
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Sistema operativo (Windows)
+Thumbs.db
+desktop.ini
+
+# Datos y modelos generados
+data/*.npy
+data/*.csv
+models/*.pt
+models/*.pth
+
+# Jupyter
+.ipynb_checkpoints/
